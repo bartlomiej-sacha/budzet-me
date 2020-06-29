@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { ThemeProvider } from 'styled-components';
 import {
   BrowserRouter as Router,
@@ -7,20 +7,26 @@ import {
 } from 'react-router-dom'
 
 
+import { useTranslation } from 'react-i18next'
+
 import GlobalStyles from './index.css';
 
 
 import theme from 'utils/theme';
 
 //dzieki jsconfig.json
-import { Navigation } from 'components'
+import { Navigation, Wrapper, LoadingIndicator } from 'components'
 
 
 
 
 function App() {
+  const { t, i18n } = useTranslation();
   return (
-    <ThemeProvider theme={theme}>
+    //cos jak div ktory wszystko wrappuje ale nie renderujemy dodatkowego diva
+    <Fragment>
+
+
       <GlobalStyles />
 
 
@@ -28,17 +34,41 @@ function App() {
         <Navigation items={[
           { content: 'Homepage', to: '/' },
           { content: 'Budget', to: '/budget' }
-        ]}></Navigation>
+        ]}
+          RightElement={(
+            <div>
+              <button onClick={() => i18n.changeLanguage('pl')}>pl</button>
+              <button onClick={() => i18n.changeLanguage('en')}>en</button>
 
-        <Switch>
-          <Route exact path="/">HomePage</Route>
-          <Route path="/budget">Budget page</Route>
-        </Switch>
+
+            </div>
+          )}
+        ></Navigation>
+
+        <Wrapper>
+          <Switch>
+            <Route exact path="/">HomePage</Route>
+            <Route path="/budget">Budget page</Route>
+          </Switch>
+        </Wrapper>
+
       </Router>
-    </ThemeProvider>
+    </Fragment>
 
   );
 }
 
-export default App;
+
+
+function RootApp() {
+  return (
+    <ThemeProvider theme={theme}>
+      <React.Suspense fallback={<LoadingIndicator />}>
+        <App />
+      </React.Suspense>
+    </ThemeProvider>
+  )
+}
+
+export default RootApp;
 
