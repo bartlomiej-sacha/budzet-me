@@ -1,6 +1,5 @@
 
 import {
-    ALL_CATEGORIES_GET,
     ALL_CATEGORIES_GET_REQUEST,
     ALL_CATEGORIES_GET_SUCCESS,
     ALL_CATEGORIES_GET_FAILURE,
@@ -9,12 +8,12 @@ import {
 
 
 const initialState = {
-    loadingState: {},
+    loadingState: null,
     allCategories: [],
 }
 
 //zawsze nowy obiekt state
-function budget(state = initialState, action) {
+function common(state = initialState, action) {
     const newLoadingState = { ...state.loadingState };
 
 
@@ -53,4 +52,4 @@ function budget(state = initialState, action) {
 }
 
 
-export default budget;
+export default common;

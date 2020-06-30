@@ -1,7 +1,6 @@
 
 import {
     LOADING_STATES,
-    BUDGET_GET,
     BUDGET_GET_REQUEST,
     BUDGET_GET_SUCCESS,
     BUDGET_GET_FAILURE,
@@ -10,13 +9,14 @@ import {
 
     BUDGETED_CATEGORIES_GET_REQUEST,
     BUDGETED_CATEGORIES_GET_SUCCESS,
-    BUDGETED_CATEGORIES_GET_FAILURE
+    BUDGETED_CATEGORIES_GET_FAILURE,
+
 
 } from 'data/constants'
 
 
 const initialState = {
-    loadingState: {},
+    loadingState: null,
     budget: {},
     budgetedCategories: [],
 }
