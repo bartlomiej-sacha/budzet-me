@@ -13,7 +13,8 @@ import { useTranslation } from 'react-i18next'
 
 import GlobalStyles from './index.css';
 
-
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import theme from 'utils/theme';
 
 //dzieki jsconfig.json
@@ -24,12 +25,12 @@ import { Navigation, Wrapper, LoadingIndicator, Button } from 'components'
 import Budget from 'pages/Budget'
 
 
-
+toast.configure();
 //odbieramy w propsach budget ze store'a oraz fetchbudget tzn akcje 
 function App() {
 
 
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   return (
     //cos jak div ktory wszystko wrappuje ale nie renderujemy dodatkowego diva
     <Fragment>

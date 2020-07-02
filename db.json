@@ -163,67 +163,35 @@
     },
     {
       "description": "Nowa transakcja",
-      "amount": 10.5,
+      "amount": 200,
       "categoryId": "3",
-      "date": "2020-02-19",
+      "date": "2020-07-02",
       "budgetId": "1",
-      "id": "aqq7G-0"
+      "id": "14T5JEy"
     },
     {
-      "description": "Nowa transakcja1",
-      "amount": 10.5,
-      "categoryId": "3",
-      "date": "2020-02-19",
-      "budgetId": "1",
-      "id": "GNERO_K"
-    },
-    {
-      "description": "Nowa transakcja2",
-      "amount": 10.5,
-      "categoryId": "3",
-      "date": "2020-02-19",
-      "budgetId": "1",
-      "id": "M9B9puJ"
-    },
-    {
-      "description": "Nowa transakcja3",
-      "amount": 10.5,
-      "categoryId": "3",
-      "date": "2020-02-19",
-      "budgetId": "1",
-      "id": "gsP5R-B"
-    },
-    {
-      "description": "Nowa transakcja5",
-      "amount": 10.5,
+      "description": "Nowa transakcja",
+      "amount": 12,
       "categoryId": "2",
-      "date": "2020-02-19",
+      "date": "2020-07-02",
       "budgetId": "1",
-      "id": "EXvZu7Z"
+      "id": "Q4U8YbK"
     },
     {
-      "description": "Nowa transakcja5",
-      "amount": 10.5,
+      "description": "dsa",
+      "amount": 123,
       "categoryId": "3",
-      "date": "2020-02-20",
+      "date": "2020-07-02",
       "budgetId": "1",
-      "id": "nd_u-b5"
+      "id": "e4daBwB"
     },
     {
-      "description": "Nowa transakcja6",
-      "amount": 10.5,
+      "description": "Nowa transakcja1231",
+      "amount": 231,
       "categoryId": "3",
-      "date": "2020-02-20",
+      "date": "2020-07-02",
       "budgetId": "1",
-      "id": "KBQrPmU"
-    },
-    {
-      "description": "Nowa transakcja7",
-      "amount": 10.6,
-      "categoryId": "3",
-      "date": "2020-02-20",
-      "budgetId": "1",
-      "id": "jHBfyjy"
+      "id": "aO9eoSS"
     }
   ]
 }

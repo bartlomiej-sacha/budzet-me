@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
 
 
 
@@ -13,9 +13,17 @@ const Item = ({ item, onClickHandler, isActive }) => (
 
 
 
-function ToggleableList({ items }) {
+function ToggleableList({ items, clickRef }) {
 
     const [selectedItem, setSelectedItem] = useState();
+
+    //do refa wyslanego przez propsy z budgetCategoryList ktory renderuje toggleableList czyli jest jego rodzicem przypisujemy funkcje setujaca wybrana parentCategory 
+
+    useEffect(() => {
+
+        clickRef.current = setSelectedItem;
+    }, [clickRef, setSelectedItem])
+
 
     return (
         <Fragment>
