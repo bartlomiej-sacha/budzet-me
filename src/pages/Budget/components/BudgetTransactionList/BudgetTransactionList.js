@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useContext } from 'react'
 
-import { connect } from 'react-redux'
+
 
 import { groupBy } from 'lodash'
 
@@ -11,17 +11,25 @@ import { formatCurrency, formatDate } from 'utils'
 import { useQuery } from 'react-query'
 
 import API from 'data/fetch'
+
+
+import BudgetContext from 'data/context/budget.context'
 //WAZNEEE uzywamy tutaj memonizacji za pomoca useMemo i wrapujemy nasze stale w tego hooka lecz te stale sa uzywane tylko w obrebie tego komponentu gdyby byla taka potrzeba by miec wyliczane takie wartosci i bylyby one uzywane w roznych komponentach ktore np potrzebuja niezabudzetowanych kategorii etc to trzeba uzyc  biblioteki reselect ktora memonizuje te wartosci na poziome reduxa a nie na poziomie komponentu
 
 
 
 //budzet jest na jeden miesiac wiec grupujemy po dniu miesiaca
-function BudgetTransactionList({ selectedParentCategoryId }) {
+function BudgetTransactionList() {
 
 
     const { data: budget } = useQuery(['budget', { id: 1 }], API.budget.fetchBudget)
     const { data: allCategories } = useQuery('allCategories', API.common.fetchAllCategories)
     const { data: budgetedCategories } = useQuery(['budgetedCategories', { id: 1 }], API.budget.fetchBudgetedCategories)
+
+    //CONTEXT JAK REDUX
+
+    const { selectedParentCategoryId } = useContext(BudgetContext.store)
+
 
     //filtrujemy wszystkie transakcje w ramach budzetu ktorych kategoria nalezy do kategori wyzszego rzedu ktory jest rozwiniety przez uzytkownika
 
@@ -109,7 +117,4 @@ function BudgetTransactionList({ selectedParentCategoryId }) {
     )
 }
 
-export default connect(state => ({
-
-    selectedParentCategoryId: state.budget.selectedParentCategoryId,
-}))(BudgetTransactionList);
+export default BudgetTransactionList;

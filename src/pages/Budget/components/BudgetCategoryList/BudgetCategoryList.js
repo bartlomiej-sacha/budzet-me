@@ -1,11 +1,11 @@
 
 
 // w funkcjach  handleclick w budget category chcemy odplaic inna funkcje ktora bedziemy odzialywac na komponent toglable dziecka  i po to uzywamy useRef
-import React, { useRef, useMemo, useCallback } from 'react'
+import React, { useRef, useMemo, useCallback, useContext } from 'react'
 
 
 
-import { connect } from 'react-redux';
+
 import 'styled-components/macro'
 
 import { groupBy } from 'lodash'
@@ -15,16 +15,16 @@ import CategoryItem from './CategoryItem'
 
 import { useTranslation } from 'react-i18next'
 
-import { selectParentCategory } from 'data/actions/budget.actions'
+
 import { useQuery } from 'react-query';
 
 import API from 'data/fetch'
 
-
+import BudgetContext from 'data/context/budget.context'
 
 
 //funkcje reduxowe oddzielim od danych
-function BudgetCategoryList({ selectParentCategory }) {
+function BudgetCategoryList() {
 
 
 
@@ -35,6 +35,8 @@ function BudgetCategoryList({ selectParentCategory }) {
     /*  console.log(fetchRef); */
 
 
+    //CONTEXT destrukturyzacja
+    const { setSelectedParentCategoryId } = useContext(BudgetContext.store)
 
 
 
@@ -57,17 +59,17 @@ function BudgetCategoryList({ selectParentCategory }) {
     // czyli w momencie kiedy selectparent categoryu ani handleclick parentcategoryref sie nie zmieni ta funkcja nie stworzy sie na nowo
     // wiec nie przerenderujemy rowniez tego componentu do ktorego przesylamy jako props ten handle czyli parent category
     const handleClearParentCategorySelect = useCallback(() => {
-        selectParentCategory();
+        setSelectedParentCategoryId();
         //
         handleClickParentCategoryRef.current()
 
-    }, [selectParentCategory, handleClickParentCategoryRef])
+    }, [setSelectedParentCategoryId, handleClickParentCategoryRef])
 
     const handleSelectRestParentCategories = useCallback(() => {
-        selectParentCategory(null);
+        setSelectedParentCategoryId(null);
         handleClickParentCategoryRef.current()
 
-    }, [selectParentCategory, handleClickParentCategoryRef]
+    }, [setSelectedParentCategoryId, handleClickParentCategoryRef]
     )
 
     //musi byc tablica elementow ma byc tyle ile jest kluczy w budgetedcategorisebyparent robimy destrukturyzacje tablicy wyciagmy z niej parentName z indexu 0 i categories z indexu 1 a nastepnie zwracamy po kazdej iteracji obiekt zawierajacy id zawierajacy Trigger ten nasz jsx element oraz zawierajacy children sama mapa zwraca tablice wiec finalnie mamy tablice 2 obiektow 
@@ -88,7 +90,7 @@ function BudgetCategoryList({ selectParentCategory }) {
                     name={parentName}
                     onClick={() => {
                         onClick(parentName);
-                        selectParentCategory(parentName)
+                        setSelectedParentCategoryId(parentName)
                     }}
                     categories={categories}
                     transactions={budget.transactions}
@@ -106,7 +108,7 @@ function BudgetCategoryList({ selectParentCategory }) {
                     />
                 )
             }),
-        })), [allCategories, budget.transactions, budgetedCategoriesByParent, selectParentCategory]
+        })), [allCategories, budget.transactions, budgetedCategoriesByParent, setSelectedParentCategoryId]
 
     )
 
@@ -194,4 +196,4 @@ function BudgetCategoryList({ selectParentCategory }) {
     )
 }
 
-export default connect(null, { selectParentCategory })(BudgetCategoryList)
+export default BudgetCategoryList

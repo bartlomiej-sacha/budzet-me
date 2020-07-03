@@ -2,14 +2,14 @@ import React, { useState, Fragment, useEffect } from 'react'
 
 
 
-const Item = ({ item, onClickHandler, isActive }) => (
+const Item = React.memo(({ item, onClickHandler, isActive }) => (
     //kazdy item to obiekt ktory posiada wlasciwosc trigger ktory posiada element jsx  czyli odwolujemy sie do property itema a to property to jsx
     <div>
         <item.Trigger onClick={onClickHandler} />
         {isActive && item.children}
     </div>
 
-)
+))
 
 
 
@@ -40,4 +40,7 @@ function ToggleableList({ items, clickRef }) {
     )
 }
 
-export default ToggleableList;
+
+
+// UZYWANE DO OPTYMALIZACJI NP JAK KLIKAMY NA GORNA CZY DOLNA BELKE W GLOWNYC KATEGORIACH TO NIE MA SENSU REERENDEROWAC CALEJ TEJ TABLEKI PO LEWEJ TYLKO TO CO SIE ZMIENIA I TO JEST HOOK KOLEJNY A WPRAPPUJEMY TOGGLEABLELIST W HOCA HIGHER ORDER COMPONENT dodatek do przegladarki react dev tools
+export default React.memo(ToggleableList);
