@@ -1,21 +1,26 @@
-export const fetchBudget = (id) => {
-    const promise = fetch(`${process.env.REACT_APP_API_URL}/budgets/${id}/?_embed=transactions`);
+export const fetchBudget = async (id, idd) => {
+    console.log(id);
 
+    console.log(idd.id);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/budgets/${idd.id}/?_embed=transactions`);
 
-    return promise;
+    const data = await response.json();
+
+    return data;
 }
 
 
-export const fetchBudgetedCategories = (id) => {
-    const promise = fetch(`${process.env.REACT_APP_API_URL}/budgets/${id}/budgetCategories`);
+export const fetchBudgetedCategories = async (id, idd) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/budgets/${idd.id}/budgetCategories`);
 
+    const data = await response.json();
 
-    return promise;
+    return data;
 }
 
 //domyszlnie fecz robi get zmienaimy na post nie wybieramy tez budzetu do jakiego zapisujemy RESTOWE API TO KONWENCJA ENDPOINTOW JAK ONE DZIALAJA I CZEGO MOZNA SIE SPODZIEWAC PO NICH jesli zamiast parametr po parametrze damy obiekt tak jak tu to nie musiym pilnowac kolejnosc parametrow
-export const addTransaction = ({ budgetId, data }) => {
-    const promise = fetch(`${process.env.REACT_APP_API_URL}/budgets/${budgetId}/transactions`, {
+export const addTransaction = async ({ budgetId, data }) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/budgets/${budgetId}/transactions`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json'
@@ -23,5 +28,7 @@ export const addTransaction = ({ budgetId, data }) => {
         body: JSON.stringify(data),
     });
 
-    return promise
+
+
+    return await response.json();
 }

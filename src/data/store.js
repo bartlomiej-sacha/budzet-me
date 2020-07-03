@@ -5,13 +5,12 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 /* import loggerMiddleware from './middleware/logger' */
 import rootReducer from './reducers'
 
-import promiseMiddleware from 'data/middlewares/promise'
-import notificationsMiddleware from 'data/middlewares/notifications'
+
+
 
 export default function configureStore(preloadedState) {
     const middlewares = [
-        promiseMiddleware,
-        notificationsMiddleware,
+
     ]
 
 

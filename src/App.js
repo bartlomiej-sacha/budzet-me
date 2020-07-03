@@ -8,7 +8,6 @@ import {
 
 
 
-
 import { useTranslation } from 'react-i18next'
 
 import GlobalStyles from './index.css';
@@ -17,12 +16,15 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import theme from 'utils/theme';
 
-//dzieki jsconfig.json
+//dzieki jsconfig.json mozna tak sobie importowac
 import { Navigation, Wrapper, LoadingIndicator, Button } from 'components'
 
 
 
 import Budget from 'pages/Budget'
+
+import { ReactQueryConfigProvider } from 'react-query'
+
 
 
 toast.configure();
@@ -58,6 +60,7 @@ function App() {
           <Switch>
             <Route exact path="/">HomePage</Route>
             <Route path="/budget">
+
               <Budget />
             </Route>
           </Switch>
@@ -72,14 +75,29 @@ function App() {
 //pierwszy mowi, ze przekazujemy do naszego komponentu dane z reduxowego statu w tym przypadku budget drugi argument to obiekt z naszymi akcjami (funkcjami)
 
 
+const queryConfig = {
+
+  shared: {
+    suspense: true
+
+  }
+
+}
 
 function RootApp() {
+
+
+
   return (
-    <ThemeProvider theme={theme}>
-      <React.Suspense fallback={<LoadingIndicator />}>
-        <App />
-      </React.Suspense>
-    </ThemeProvider>
+    <ReactQueryConfigProvider config={queryConfig}>
+      <ThemeProvider theme={theme}>
+        <React.Suspense fallback={<LoadingIndicator />}>
+          <App />
+        </React.Suspense>
+      </ThemeProvider>
+
+
+    </ReactQueryConfigProvider>
   )
 }
 

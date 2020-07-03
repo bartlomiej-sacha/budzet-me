@@ -1,4 +1,4 @@
-
+/*
 import {
     ALL_CATEGORIES_GET_REQUEST,
     ALL_CATEGORIES_GET_SUCCESS,
@@ -52,4 +52,4 @@ function common(state = initialState, action) {
 }
 
 
-export default common;
+export default common; */

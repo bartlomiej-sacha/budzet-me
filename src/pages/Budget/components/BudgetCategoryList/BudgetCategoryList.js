@@ -16,20 +16,42 @@ import CategoryItem from './CategoryItem'
 import { useTranslation } from 'react-i18next'
 
 import { selectParentCategory } from 'data/actions/budget.actions'
+import { useQuery } from 'react-query';
+
+import API from 'data/fetch'
+
+
 
 
 //funkcje reduxowe oddzielim od danych
-function BudgetCategoryList({ budgetedCategories, allCategories, budget,
-    selectParentCategory }) {
+function BudgetCategoryList({ selectParentCategory }) {
+
+
+
+    const { data: budget } = useQuery(['budget', { id: 1 }], API.budget.fetchBudget)
+    const { data: allCategories } = useQuery('allCategories', API.common.fetchAllCategories)
+    const { data: budgetedCategories } = useQuery(['budgetedCategories', { id: 1 }], API.budget.fetchBudgetedCategories)
+
+    /*  console.log(fetchRef); */
+
+
+
+
+
+
     const { t } = useTranslation();
 
     //use ref - referencja  zanim ref cos ma to ma nulla react ref w google || wysylamy to jako props do toglablelist to tam w useeffect przypisujemy do funkcji ktora chcemy miec z dziecka i odpalamy w handle w rodzicu linia 36
     const handleClickParentCategoryRef = useRef(null);
 
+
     //jezeli ktora z tych zmienny zmieni sie z tablicy (typy proste prowonuje do wartosci a typy takie jak tablica porownuje referencjami)
     const budgetedCategoriesByParent = useMemo(() => groupBy(budgetedCategories, item => allCategories.find(category => category.id === item.categoryId).parentCategory.name),
         [budgetedCategories, allCategories]
     )
+
+
+
 
     // roznica useCallback a memo jest taka, ze callback zwraca nam funkcje ktora przekazujemy jako pierwszy parametr a nie wartosc tej funkcji
     // czyli w momencie kiedy selectparent categoryu ani handleclick parentcategoryref sie nie zmieni ta funkcja nie stworzy sie na nowo
@@ -89,7 +111,7 @@ function BudgetCategoryList({ budgetedCategories, allCategories, budget,
     )
 
 
-    console.log(budget.transactions);
+
 
     const totalSpent = useMemo(() => budget.transactions
         .reduce((acc, transaction) => acc + transaction.amount, 0), [budget.transactions])
@@ -101,10 +123,10 @@ function BudgetCategoryList({ budgetedCategories, allCategories, budget,
     const amountTaken = useMemo(() => budgetedCategories.reduce((acc, budgetedCategory) => {
         const categoryTransactions = budget.transactions.filter(transactions => transactions.categoryId === budgetedCategory.id)
         //trick wrzucamy logowana zmienna do obiektu by znac jej nazwe
-        console.log({ categoryTransactions });
+
         const categoryExpenses = categoryTransactions.reduce((acc, transaction) => acc + transaction.amount, 0)
 
-        console.log({ categoryExpenses });
+
 
         return acc + Math.max(categoryExpenses, budgetedCategory.budget);
     }, 0), [budget.transactions, budgetedCategories]);
@@ -124,9 +146,6 @@ function BudgetCategoryList({ budgetedCategories, allCategories, budget,
 
     const availableForRestCategories = useMemo(() => budget.totalAmount - amountTaken - notBudgetedExpenses, [budget.totalAmount, amountTaken, notBudgetedExpenses]);
 
-    console.log(budget.totalAmount);
-    console.log({ amountTaken });
-    console.log({ notBudgetedExpenses });
 
 
     //is loaded trzeba uzyc
@@ -168,12 +187,11 @@ function BudgetCategoryList({ budgetedCategories, allCategories, budget,
 
             </div>
 
+
+
+
         </div>
     )
 }
 
-export default connect(state => ({
-    budgetedCategories: state.budget.budgetedCategories,
-    allCategories: state.common.allCategories,
-    budget: state.budget.budget,
-}), { selectParentCategory })(BudgetCategoryList)
+export default connect(null, { selectParentCategory })(BudgetCategoryList)

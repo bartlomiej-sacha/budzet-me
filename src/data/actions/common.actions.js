@@ -1,4 +1,4 @@
-import API from 'data/fetch'
+/* import API from 'data/fetch'
 
 import {
 
@@ -20,3 +20,4 @@ export const fetchAllCategories = (id) => {
 
 
 }
+ */

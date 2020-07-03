@@ -7,14 +7,21 @@ import { groupBy } from 'lodash'
 import { List, ListItem } from './BudgetTransactionList.css'
 
 import { formatCurrency, formatDate } from 'utils'
+
+import { useQuery } from 'react-query'
+
+import API from 'data/fetch'
 //WAZNEEE uzywamy tutaj memonizacji za pomoca useMemo i wrapujemy nasze stale w tego hooka lecz te stale sa uzywane tylko w obrebie tego komponentu gdyby byla taka potrzeba by miec wyliczane takie wartosci i bylyby one uzywane w roznych komponentach ktore np potrzebuja niezabudzetowanych kategorii etc to trzeba uzyc  biblioteki reselect ktora memonizuje te wartosci na poziome reduxa a nie na poziomie komponentu
 
 
 
 //budzet jest na jeden miesiac wiec grupujemy po dniu miesiaca
-function BudgetTransactionList({ transactions, allCategories, budgetedCategories, selectedParentCategoryId }) {
+function BudgetTransactionList({ selectedParentCategoryId }) {
 
 
+    const { data: budget } = useQuery(['budget', { id: 1 }], API.budget.fetchBudget)
+    const { data: allCategories } = useQuery('allCategories', API.common.fetchAllCategories)
+    const { data: budgetedCategories } = useQuery(['budgetedCategories', { id: 1 }], API.budget.fetchBudgetedCategories)
 
     //filtrujemy wszystkie transakcje w ramach budzetu ktorych kategoria nalezy do kategori wyzszego rzedu ktory jest rozwiniety przez uzytkownika
 
@@ -22,13 +29,13 @@ function BudgetTransactionList({ transactions, allCategories, budgetedCategories
     const filteredTransactionsBySelectedParentCategory = useMemo(() => {
 
         if (typeof selectedParentCategoryId === 'undefined') {
-            return transactions;
+            return budget.transactions;
 
         }
 
 
         if (selectedParentCategoryId === null) {
-            return transactions.filter(transaction => {
+            return budget.transactions.filter(transaction => {
                 //some  dajemy funkcje w ktorej implementujemy warunek do sprawdzenia i dostajemy true lub false i w zaleznosci funkcja zwroci true lub false jesli w ktorejs iteracji dostaniemy true lub false
                 const hasBudgetedCategory = budgetedCategories
                     .some((budgetedCategory) => budgetedCategory.categoryId === transaction.categoryId)
@@ -39,7 +46,7 @@ function BudgetTransactionList({ transactions, allCategories, budgetedCategories
 
         }
 
-        return transactions
+        return budget.transactions
             .filter(transaction => {
 
                 try {
@@ -57,7 +64,7 @@ function BudgetTransactionList({ transactions, allCategories, budgetedCategories
 
 
             })
-    }, [allCategories, budgetedCategories, selectedParentCategoryId, transactions])
+    }, [allCategories, budgetedCategories, selectedParentCategoryId, budget.transactions])
 
 
 
@@ -103,8 +110,6 @@ function BudgetTransactionList({ transactions, allCategories, budgetedCategories
 }
 
 export default connect(state => ({
-    transactions: state.budget.budget.transactions,
-    budgetedCategories: state.budget.budgetedCategories,
-    allCategories: state.common.allCategories,
+
     selectedParentCategoryId: state.budget.selectedParentCategoryId,
 }))(BudgetTransactionList);
